@@ -9,38 +9,60 @@ import {
 //import connect to connect UI component and Redux
 import { connect } from "react-redux";
 
+// UI Component
 class Count extends Component {
-  state = {
-    count: 0,
-  };
+  state = { carName: "Benz c63" };
+
+  // addition
   increment = () => {
-    // this.setState({ count: count + 1 });
-    this.props.increment();
+    const { value } = this.selectNumber;
+    this.props.increment(value * 1);
   };
+  // substraction
   decrement = () => {
-    this.props.decrement();
+    const { value } = this.selectNumber;
+    this.props.decrement(value * 1);
   };
+  // add if odd
+  incrementIfOdd = () => {
+    const { value } = this.selectNumber;
+    if (this.props.count % 2 !== 0) {
+      this.props.increment(value * 1);
+    }
+  };
+  // add sync
   incrementAsync = () => {
-    this.props.incrementAsync(1000);
+    const { value } = this.selectNumber;
+    this.props.incrementAsync(value * 1, 2000);
   };
+
   render() {
-    // console.log(this.props);
+    console.log("UI Component received props: ", this.props);
     const { count } = this.props;
     return (
       <div>
-        <h1>Count Component: {count}</h1>
-        <button onClick={this.increment}>+</button>
-        <button onClick={this.decrement}>-</button>
-        <button onClick={this.incrementAsync}>+ async</button>
+        <h2>Count Component,Number of Persons:{this.props.renshu}</h2>
+        <h4>Current Count： {count}</h4>
+        <select ref={(c) => (this.selectNumber = c)}>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        &nbsp;
+        <button onClick={this.increment}>+</button>&nbsp;
+        <button onClick={this.decrement}>-</button>&nbsp;
+        <button onClick={this.incrementIfOdd}>+ if odd</button>&nbsp;
+        <button onClick={this.incrementAsync}>add asyn</button>&nbsp;
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({ count: state });
-
-export default connect(mapStateToProps, {
-  increment,
-  decrement,
-  incrementAsync,
-})(Count);
+// use connect()() create a Count Continaer Component
+export default connect(
+  (state) => ({
+    count: state,
+    // personCount: state.persons.length,
+  }),
+  { increment, decrement, incrementAsync }
+)(Count);
