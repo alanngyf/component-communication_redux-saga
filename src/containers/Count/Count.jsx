@@ -37,11 +37,16 @@ class Count extends Component {
   };
 
   render() {
-    console.log("UI Component received props: ", this.props);
-    const { count } = this.props;
+    // console.log(
+    //   "Count UI Component received props: ",
+    //   this.props.state.countReducer
+    // );
+    const { count } = this.props.state;
+    console.log("personCount", this.props.personCount);
+    const { personCount } = this.props;
     return (
       <div>
-        <h2>Count Component,Number of Persons:{this.props.renshu}</h2>
+        <h2>Count Component,Number of Persons:{personCount}</h2>
         <h4>Current Count： {count}</h4>
         <select ref={(c) => (this.selectNumber = c)}>
           <option value="1">1</option>
@@ -61,8 +66,8 @@ class Count extends Component {
 // use connect()() create a Count Continaer Component
 export default connect(
   (state) => ({
-    count: state,
-    // personCount: state.persons.length,
+    state: state.count,
+    personCount: state.persons.length,
   }),
   { increment, decrement, incrementAsync }
 )(Count);
